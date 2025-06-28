@@ -28,7 +28,7 @@ def get_text():
 
 
 
-st.title("Mmemory Bot")
+st.title("Memory Bot")
 
 api=st.sidebar.text_input("API-Key", type="password")
 MODEL=st.sidebar.selectbox(label='Model',options=['gpt-3.5-turbo','text-davinci-003','text-davinci-002'])
