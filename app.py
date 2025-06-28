@@ -61,5 +61,5 @@ if user_input:
 
 with st.expander("Conversation"):
     for i in range(len(st.session_state['generated'])-1,-1,-1):
-        st.info(st.session_state["past"][i]")
-        st.info(st.session_state["generated"][i]")
+        st.info(st.session_state["past"][i])
+        st.info(st.session_state["generated"][i])
