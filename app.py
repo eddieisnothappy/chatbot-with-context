@@ -4,8 +4,8 @@ from langchain.chains.conversation.memory import ConversationEntityMemory
 from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 from langchain_community.chat_models import ChatOpenAI
 
-st.set_page_config(page_title="Memory Chatbot", layout="centered")
-st.title("🧠 Memory Bot - Chat with Context")
+st.set_page_config(page_title="OpenRouter Chatbot", layout="centered")
+st.title("🧠 Memory Chatbot (OpenRouter)")
 
 for key in ["generated", "past"]:
     if key not in st.session_state:
@@ -13,22 +13,28 @@ for key in ["generated", "past"]:
 
 def get_text():
     return st.text_input(
-        "You:", 
-        value="", 
-        placeholder="Your AI assistant here! Ask me anything ...",
+        "You:",
+        value="",
+        placeholder="Ask me anything...",
         label_visibility="hidden",
         key="input_text"
     )
 
-api = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
-MODEL = st.sidebar.selectbox("Choose a Model", ["gpt-3.5-turbo", "gpt-4"])
+api = st.sidebar.text_input("🔐 OpenRouter API Key", type="password")
+MODEL = st.sidebar.selectbox("Choose a Model", [
+    "mistralai/mixtral-8x7b",
+    "meta-llama/llama-3-8b-instruct",
+    "anthropic/claude-3-haiku",
+    "google/gemini-pro"
+])
 
 if api:
     try:
         llm = ChatOpenAI(
+            model_name=MODEL,
             temperature=0,
             openai_api_key=api,
-            model_name=MODEL
+            openai_api_base="https://openrouter.ai/api/v1"
         )
 
         if "entity_memory" not in st.session_state:
@@ -63,7 +69,9 @@ if api:
             for i in range(len(st.session_state['generated']) - 1, -1, -1):
                 st.markdown(f"**You:** {st.session_state['past'][i]}")
                 st.markdown(f"**Bot:** {st.session_state['generated'][i]}")
+
     except Exception as e:
         st.error(f"Error: {e}")
 else:
-    st.error("🔐 Please enter your OpenAI API key to begin.")
+    st.error("🔑 Please enter your OpenRouter API key to begin.")
+
