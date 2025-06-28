@@ -22,10 +22,12 @@ def get_text():
 
 api = st.sidebar.text_input("🔐 OpenRouter API Key", type="password")
 MODEL = st.sidebar.selectbox("Choose a Model", [
-    "mistralai/mixtral-8x7b",
+    "mistral/mixtral-8x7b",
     "meta-llama/llama-3-8b-instruct",
     "anthropic/claude-3-haiku",
-    "google/gemini-pro"
+    "google/gemini-pro",
+    "openai/gpt-3.5-turbo",
+    "openai/gpt-4"
 ])
 
 if api:
