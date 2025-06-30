@@ -5,7 +5,7 @@ from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMP
 from langchain_community.chat_models import ChatOpenAI
 
 st.set_page_config(page_title="OpenRouter Chatbot", layout="centered")
-st.title("🧠 Memory Chatbot (OpenRouter)")
+st.title("🧠Chatbot with Context Memory (OpenRouter)")
 
 for key in ["generated", "past"]:
     if key not in st.session_state:
