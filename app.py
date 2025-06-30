@@ -25,9 +25,7 @@ MODEL = st.sidebar.selectbox("Choose a Model", [
     "mistral/mixtral-8x7b",
     "meta-llama/llama-3-8b-instruct",
     "anthropic/claude-3-haiku",
-    "google/gemini-pro",
-    "openai/gpt-3.5-turbo",
-    "openai/gpt-4"
+    "google/gemini-pro"
 ])
 
 if api:
