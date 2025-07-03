@@ -7,7 +7,6 @@ from langchain_community.chat_models import ChatOpenAI
 st.set_page_config(page_title="OpenRouter Chatbot", layout="centered")
 st.title("🧠 Chatbot with Context Memory")
 
-# Initialize session state
 for key in ["generated", "past"]:
     if key not in st.session_state:
         st.session_state[key] = []
@@ -49,14 +48,12 @@ if api:
             )
             st.success("Conversation memory cleared.")
 
-        # Display previous messages
         for i in range(len(st.session_state.generated)):
             with st.chat_message("user"):
                 st.markdown(st.session_state.past[i])
             with st.chat_message("assistant"):
                 st.markdown(st.session_state.generated[i])
 
-        # Chat input (auto-clears!)
         user_input = st.chat_input("Ask something...")
         if user_input:
             with st.chat_message("user"):
