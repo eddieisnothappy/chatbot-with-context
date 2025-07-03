@@ -7,23 +7,10 @@ from langchain_community.chat_models import ChatOpenAI
 st.set_page_config(page_title="OpenRouter Chatbot", layout="centered")
 st.title("🧠 Chatbot with Context Memory")
 
-for key in ["generated", "past", "clear_input"]:
+# Initialize session state
+for key in ["generated", "past"]:
     if key not in st.session_state:
         st.session_state[key] = []
-if "clear_input" not in st.session_state:
-    st.session_state["clear_input"] = False
-
-def get_text():
-    if st.session_state.clear_input:
-        st.session_state["input_text"] = ""
-        st.session_state.clear_input = False
-    return st.text_input(
-        "You:",
-        value=st.session_state.get("input_text", ""),
-        placeholder="Ask me anything...",
-        label_visibility="hidden",
-        key="input_text"
-    )
 
 api = st.sidebar.text_input("🔐 OpenRouter API Key", type="password")
 MODEL = st.sidebar.selectbox("Choose a Model", [
@@ -62,20 +49,27 @@ if api:
             )
             st.success("Conversation memory cleared.")
 
-        user_input = get_text()
+        # Display previous messages
+        for i in range(len(st.session_state.generated)):
+            with st.chat_message("user"):
+                st.markdown(st.session_state.past[i])
+            with st.chat_message("assistant"):
+                st.markdown(st.session_state.generated[i])
 
+        # Chat input (auto-clears!)
+        user_input = st.chat_input("Ask something...")
         if user_input:
-            output = st.session_state.conversation.run(input=user_input)
+            with st.chat_message("user"):
+                st.markdown(user_input)
+            output = st.session_state.conversation.run(user_input)
+            with st.chat_message("assistant"):
+                st.markdown(output)
+
             st.session_state.past.append(user_input)
             st.session_state.generated.append(output)
-            st.session_state.clear_input = True  # ✅ triggers clear on rerun
-
-        with st.expander("💬 Conversation History"):
-            for i in range(len(st.session_state['generated']) - 1, -1, -1):
-                st.markdown(f"**You:** {st.session_state['past'][i]}")
-                st.markdown(f"**Bot:** {st.session_state['generated'][i]}")
 
     except Exception as e:
         st.error(f"Error: {e}")
 else:
     st.error("🔑 Please enter your OpenRouter API key to begin.")
+
