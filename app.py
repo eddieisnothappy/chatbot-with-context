@@ -5,7 +5,7 @@ from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMP
 from langchain_community.chat_models import ChatOpenAI
 
 st.set_page_config(page_title="OpenRouter Chatbot", layout="centered")
-st.title("🧠Chatbot with Context Memory")
+st.title("🧠 Chatbot with Context Memory")
 
 for key in ["generated", "past"]:
     if key not in st.session_state:
@@ -63,6 +63,7 @@ if api:
             output = st.session_state.conversation.run(input=user_input)
             st.session_state.past.append(user_input)
             st.session_state.generated.append(output)
+            st.session_state["input_text"] = ""  # ✅ Auto-clear input field
 
         with st.expander("💬 Conversation History"):
             for i in range(len(st.session_state['generated']) - 1, -1, -1):
@@ -73,4 +74,3 @@ if api:
         st.error(f"Error: {e}")
 else:
     st.error("🔑 Please enter your OpenRouter API key to begin.")
-
